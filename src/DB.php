@@ -2,7 +2,10 @@
 
 namespace Corviz\Database;
 
+use ClanCats\Hydrahon\Query\Expression;
+use ClanCats\Hydrahon\Query\Sql\Func;
 use Exception;
+use ClanCats\Hydrahon\Query\Sql\Exception as SqlException;
 use ClanCats\Hydrahon\Query\Sql\Table;
 
 /**
@@ -59,6 +62,27 @@ abstract class DB
         if (is_null(self::$defaultConnection)) {
             self::$defaultConnection = $connectionName;
         }
+    }
+
+    /**
+     * @param mixed $value
+     * @return Expression
+     */
+    public static function raw(mixed $value): Expression
+    {
+        return new Expression($value);
+    }
+
+    /**
+     * @param $functionName
+     * @param ...$args
+     *
+     * @return Func
+     * @throws SqlException
+     */
+    public static function function($functionName, ...$args): Func
+    {
+        return new Func($functionName, ...$args);
     }
 
     /**
