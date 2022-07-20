@@ -62,7 +62,7 @@ class PDOConnection extends Connection
     /**
      * @inheritdoc
      */
-    public function createBuilder(): Builder
+    public function fetchBuilder(): Builder
     {
         if (!$this->builder) {
             $connection = $this->pdo;

@@ -69,7 +69,7 @@ abstract class DB
      */
     public static function table(string $tableName): Table
     {
-        return self::connection()->createBuilder()->table($tableName);
+        return self::connection()->fetchBuilder()->table($tableName);
     }
 
     /**

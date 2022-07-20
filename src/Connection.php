@@ -32,5 +32,5 @@ abstract class Connection
     /**
      * @return Builder
      */
-    abstract public function createBuilder(): Builder;
+    abstract public function fetchBuilder(): Builder;
 }
