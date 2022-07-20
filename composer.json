@@ -1,0 +1,20 @@
+{
+    "name": "corviz/database",
+    "description": "Standalone library for database interaction",
+    "type": "library",
+    "require": {
+        "php": ">=8",
+        "clancats/hydrahon": "^1.1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Corviz\\Database\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Carlos A B Carucce"
+        }
+    ]
+}
