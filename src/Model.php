@@ -119,6 +119,23 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Checks if the current object exists in database. True when exists, false otherwise.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function exists(): bool
+    {
+        $query = static::query()->select();
+
+        foreach ($this->keys() as $key => $value) {
+            $query->where($key, $value);
+        }
+
+        return $query->exists();
+    }
+
+    /**
      * Attempts to insert the new row. Throws an exception when it fails.
      *
      * @return void
