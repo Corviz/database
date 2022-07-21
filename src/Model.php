@@ -126,7 +126,7 @@ class Model implements ArrayAccess, JsonSerializable
      */
     public function exists(): bool
     {
-        $query = static::query()->select();
+        $query = static::query()->select(DB::raw(1))->limit(1);
 
         foreach ($this->keys() as $key => $value) {
             $query->where($key, $value);
@@ -138,17 +138,21 @@ class Model implements ArrayAccess, JsonSerializable
     /**
      * Attempts to insert the new row. Throws an exception when it fails.
      *
-     * @return void
+     * @return bool
      * @throws Exception
      */
-    public function insert(): void
+    public function insert(): bool
     {
         $pks = (array) static::$primaryKey;
         $id = static::query()->insert($this->values())->execute();
 
         if (count($pks) == 1) {
             $this->data[$pks[0]] = $id;
+
+            return isset(((string) $id)[0]);
         }
+
+        return $this->exists();
     }
 
     /**
@@ -236,6 +240,19 @@ class Model implements ArrayAccess, JsonSerializable
     public function offsetUnset(mixed $offset)
     {
         unset($this->$offset);
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function save(): bool
+    {
+        if (!$this->update()) {
+            return $this->insert();
+        }
+
+        return true;
     }
 
     /**
