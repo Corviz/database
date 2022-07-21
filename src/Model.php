@@ -25,14 +25,31 @@ class Model implements ArrayAccess, JsonSerializable
     protected static array $fields = [];
 
     /**
-     * @var string
+     * @var ?string
      */
-    protected static string $table;
+    protected static ?string $table = null;
 
     /**
      * @var array
      */
     private array $data = [];
+
+    /**
+     * Attempts store values in the current table.
+     *
+     * @param array|Model $values
+     *
+     * @return void
+     * @throws Exception
+     */
+    public static function create(array|Model $values): void
+    {
+        if ($values instanceof Model) {
+            $values = $values->values();
+        }
+
+        self::query()->insert($values)->execute();
+    }
 
     /**
      * @param array|string|int $id
