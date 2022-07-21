@@ -72,9 +72,7 @@ class Model implements ArrayAccess, JsonSerializable
         return  DB::connection(static::$connection)
             ->setSelectMutator(function(&$rows){
                 foreach ($rows as &$row) {
-                    $instance = new static();
-                    $instance->fill((array) $row, false);
-                    $row = $instance;
+                    $row = new static((array) $row);
                 }
             })
             ->fetchBuilder()
@@ -313,6 +311,16 @@ class Model implements ArrayAccess, JsonSerializable
 
         if (method_exists($this, $methodName)) {
             $value = $this->$methodName($value);
+        }
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function __construct(mixed $data = null)
+    {
+        if (!empty($data)) {
+            $this->data = (array) $data;
         }
     }
 
