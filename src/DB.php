@@ -9,8 +9,11 @@ use ClanCats\Hydrahon\Query\Sql\Exception as SqlException;
 use ClanCats\Hydrahon\Query\Sql\Table;
 
 /**
- * @method static execute(string $query, array $bindings = []): int
- * @method static select(string $query, array $bindings = []): array
+ * @method static bool beginTransaction()
+ * @method static int execute(string $query, array $bindings = [])
+ * @method static bool commit()
+ * @method static bool rollback()
+ * @method static array select(string $query, array $bindings = [])
  */
 abstract class DB
 {
@@ -110,5 +113,7 @@ abstract class DB
         if (method_exists($connection, $name)) {
             return $connection->$name(...$arguments);
         }
+
+        return null;
     }
 }
