@@ -11,7 +11,10 @@
     "autoload": {
         "psr-4": {
             "Corviz\\Database\\": "src/"
-        }
+        },
+        "files": [
+            "register_translator.php"
+        ]
     },
     "authors": [
         {
