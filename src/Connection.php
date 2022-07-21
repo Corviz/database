@@ -13,6 +13,19 @@ abstract class Connection
     protected mixed $selectMutator = null;
 
     /**
+     * Starts a database transaction.
+     *
+     * @return bool
+     */
+    abstract public function beginTransaction(): bool;
+
+    /**
+     * Commit changes (after beginTransaction).
+     * @return bool
+     */
+    abstract public function commit(): bool;
+
+    /**
      * Execute query and return thr number of affected rows.
      *
      * @param string $query
@@ -22,6 +35,13 @@ abstract class Connection
      * @throws Exception
      */
     abstract public function execute(string $query, array $bindings = []): int;
+
+    /**
+     * Discard changes (after beginTransaction).
+     *
+     * @return bool
+     */
+    abstract public function rollback(): bool;
 
     /**
      * Execute a query and return an array of the selected rows.

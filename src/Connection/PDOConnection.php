@@ -2,11 +2,10 @@
 
 namespace Corviz\Database\Connection;
 
-use ClanCats\Hydrahon\Builder;
+use Corviz\Database\Builder;
 use ClanCats\Hydrahon\Query\Sql\FetchableInterface;
 use ClanCats\Hydrahon\Query\Sql\Insert;
 use Corviz\Database\Connection;
-use Exception;
 use PDO;
 
 class PDOConnection extends Connection
@@ -34,6 +33,22 @@ class PDOConnection extends Connection
     /**
      * @inheritdoc
      */
+    public function beginTransaction(): bool
+    {
+        return $this->pdo->beginTransaction();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function commit(): bool
+    {
+        return $this->pdo->commit();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function execute(string $query, array $bindings = []): int
     {
         $statement = $this->pdo->prepare($query);
@@ -43,6 +58,14 @@ class PDOConnection extends Connection
         }
 
         return 0;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rollback(): bool
+    {
+        return $this->pdo->rollBack();
     }
 
     /**
