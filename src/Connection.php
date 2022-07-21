@@ -8,6 +8,11 @@ use Exception;
 abstract class Connection
 {
     /**
+     * @var callable|null
+     */
+    protected mixed $selectMutator = null;
+
+    /**
      * Execute query and return thr number of affected rows.
      *
      * @param string $query
@@ -28,6 +33,17 @@ abstract class Connection
      * @throws Exception
      */
     abstract public function select(string $query, array $bindings = []): array;
+
+    /**
+     * @param callable $mutator
+     * @return $this
+     */
+    public function setSelectMutator(callable $mutator): static
+    {
+        $this->selectMutator = $mutator;
+
+        return $this;
+    }
 
     /**
      * @return Builder

@@ -29,10 +29,10 @@ abstract class DB
      *
      * @param string|null $connectionName
      *
-     * @return mixed
+     * @return Connection
      * @throws Exception
      */
-    public static function connection(string $connectionName = null): Connection
+    public static function connection(?string $connectionName = null): Connection
     {
         if (!$connectionName) {
             $connectionName = self::$defaultConnection;
