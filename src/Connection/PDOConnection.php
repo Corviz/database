@@ -2,7 +2,7 @@
 
 namespace Corviz\Database\Connection;
 
-use Corviz\Database\Builder;
+use ClanCats\Hydrahon\Builder;
 use ClanCats\Hydrahon\Query\Sql\FetchableInterface;
 use ClanCats\Hydrahon\Query\Sql\Insert;
 use Corviz\Database\Connection;
