@@ -1,11 +1,15 @@
 - title: 'Home'
   link: 'index'
+  file: 'index.md'
 
 - title: 'Setup'
   link: 'index'
+  file: 'index.md'
 
 - title: 'Examples'
   link: 'index'
+  file: 'index.md'
 
 - title: 'Models'
   link: 'index'
+  file: 'index.md'
