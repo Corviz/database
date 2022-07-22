@@ -1,6 +1,3 @@
----
-permalink: /index/
----
 {{ page.name }}
 {{ page.permalink }}
 {% include menu.html %}
