@@ -54,4 +54,4 @@ Message::create([
 ]);
 ```
 
-[See complete documentation...](corviz.github.io/database-layer)
+[See complete documentation...](https://corviz.github.io/database-layer/)
