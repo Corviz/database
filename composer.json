@@ -1,5 +1,5 @@
 {
-    "name": "corviz/database",
+    "name": "corviz/database-layer",
     "description": "Standalone library for database interaction",
     "type": "library",
     "require": {
