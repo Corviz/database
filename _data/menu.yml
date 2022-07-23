@@ -2,14 +2,18 @@
   link: 'index'
   file: 'index.md'
 
-- title: 'Setup'
-  link: 'index'
-  file: 'index.md'
-
-- title: 'Examples'
-  link: 'index'
-  file: 'index.md'
+- title: 'Setup/Configs'
+  link: 'setup'
+  file: 'setup.md'
 
 - title: 'Models'
-  link: 'index'
-  file: 'index.md'
+  link: 'models'
+  file: 'models.md'
+
+- title: 'Query builder examples'
+  link: 'query-builder'
+  file: 'query-builder.md'
+
+- title: 'Native queries'
+  link: 'native-queries'
+  file: 'native-queries.md'

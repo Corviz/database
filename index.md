@@ -1,41 +1,57 @@
-{{ page.name }}
-{{ page.permalink }}
 {% include menu.html %}
 
-## Welcome to GitHub Pages
+# Corviz - Database Layer
 
-You can use the [editor on GitHub](https://github.com/Corviz/database/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Corviz database layer provides a simple yet powerful interface to run your database operations. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+We use [Hydrahon](https://clancats.io/hydrahon/master/) query builder as it's base components, extending it with a Model.
+It means that all operations included in their library will be avaliable for your models as well.
 
-### Markdown
+## Installation
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```
+composer require corviz/database-layer
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+## Features
 
-### Jekyll Themes
+- Simple to use query builder
+- Database interface (binding, native queries, transactions, db function execution, etc...)
+- Base model that features mutators, accessors and CRUD operations...
+- Mass objects creation
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Corviz/database/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+And more coming soon!
 
-### Support or Contact
+### Have a taste:
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Example 1 - Fetch active users:
+```php
+$users = User::query()->where('active', true)->get();
+
+foreach ($users as $user) {
+    echo $user->id, ' - ', $user->email;
+}
+```
+
+Example 2 - Create and save a contact:
+
+```php
+$contact = new Contact();
+$contact->name =  'John';
+$contact->phone = '+1 (999) 999-9999';
+$contact->insert(); 
+```
+
+Example 3 - Create messages in the messages table:
+```php
+Message::create([
+    [
+        'message' => 'This is an warning message',
+        'level' => 'warning'
+    ],
+    [
+        'message' => 'This is an info message',
+        'level' => 'info'
+    ]
+]);
+```

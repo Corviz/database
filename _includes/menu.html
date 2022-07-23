@@ -1,36 +1,8 @@
-<style>
-    nav ul {
-        display: flex;
-    }
-
-    nav ul li {
-        list-style: none;
-    }
-
-    nav ul,
-    nav ul li {
-        margin: 0;
-        padding: 0;
-    }
-
-    nav ul li a {
-        text-decoration: none;
-        padding: 3px 5px;
-        display: block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    nav ul li.active a {
-        text-decoration: underline;
-    }
-</style>
-<nav>
-    <ul>
+<nav class="top-menu">
+    <ul class="menu">
         {% for item in site.data.menu %}
         <li {% if page.name == item.file %}class="active"{% endif %}>
-        <a href="{{ item.link }}">{{ item.title }}</a>
+            <a href="{{ item.link }}">{{ item.title }}</a>
         </li>
         {% endfor %}
     </ul>
