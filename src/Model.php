@@ -48,7 +48,7 @@ class Model implements ArrayAccess, JsonSerializable
             $values = $values->values();
         }
 
-        self::query()->insert($values)->execute();
+        static::query()->insert($values)->execute();
     }
 
     /**
@@ -105,7 +105,7 @@ class Model implements ArrayAccess, JsonSerializable
      */
     public function delete(): int
     {
-        $deleteQuery = self::query()->delete();
+        $deleteQuery = static::query()->delete();
 
         foreach ($this->keys() as $key => $value) {
             $deleteQuery->where($key, $value);
@@ -122,6 +122,8 @@ class Model implements ArrayAccess, JsonSerializable
      */
     public function fill(array $data, bool $processSetters = true): void
     {
+        if (empty($data)) return;
+
         $filtered = array_intersect_key($data, array_flip(static::$fields));
 
         if ($processSetters) {
@@ -171,11 +173,15 @@ class Model implements ArrayAccess, JsonSerializable
     /**
      * Attempts to insert the new row. Throws an exception when it fails.
      *
+     * @param array $data
+     *
      * @return bool
      * @throws Exception
      */
-    public function insert(): bool
+    public function insert(array $data = []): bool
     {
+        $this->fill($data);
+
         $pks = (array) static::$primaryKey;
         $id = static::query()->insert($this->values())->execute();
 
@@ -276,11 +282,18 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Attempts to update. If not successful, attempts to insert.
+     * Returns true if successful, otherwise false.
+     *
+     * @param array $data
+     *
      * @return bool
      * @throws Exception
      */
-    public function save(): bool
+    public function save(array $data = []): bool
     {
+        $this->fill($data);
+
         if (!$this->update()) {
             return $this->insert();
         }
@@ -302,11 +315,15 @@ class Model implements ArrayAccess, JsonSerializable
      * Attempt to update returns the number of affected rows.
      * Throws an exception on error.
      *
+     * @param array $data
+     *
      * @return int
      * @throws Exception
      */
-    public function update(): int
+    public function update(array $data = []): int
     {
+        $this->fill($data);
+
         if (!$this->keysFilled()) {
             return 0;
         }
@@ -318,7 +335,7 @@ class Model implements ArrayAccess, JsonSerializable
             unset($data[$key]);
         }
 
-        $updateQuery = self::query()->update($data);
+        $updateQuery = static::query()->update($data);
 
         foreach ($pkValues as $key => $value) {
             $updateQuery->where($key, $value);
@@ -328,7 +345,7 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * Grabs field values;
+     * Grabs field values
      *
      * @return array
      */
