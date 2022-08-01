@@ -36,6 +36,7 @@ class Model implements ArrayAccess, JsonSerializable
 
     /**
      * Attempts store values in the current table.
+     * Can insert multiple rows at once.
      *
      * @param array|Model $values
      *
