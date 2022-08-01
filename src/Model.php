@@ -147,6 +147,10 @@ class Model implements ArrayAccess, JsonSerializable
      */
     public function exists(): bool
     {
+        if (!$this->keysFilled()) {
+            return false;
+        }
+
         $query = static::query()->select(DB::raw(1))->limit(1);
 
         foreach ($this->keys() as $key => $value) {
