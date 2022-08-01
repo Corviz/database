@@ -151,6 +151,24 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * @return bool
+     */
+    public function keysFilled(): bool
+    {
+        $filled = true;
+        $keys = (array) static::$primaryKey;
+
+        foreach ($keys as $key) {
+            if (!(isset($this->data[$key]) && !is_null($this->data[$key]))) {
+                $filled = false;
+                break;
+            }
+        }
+
+        return $filled;
+    }
+
+    /**
      * Attempts to insert the new row. Throws an exception when it fails.
      *
      * @return bool
@@ -289,6 +307,10 @@ class Model implements ArrayAccess, JsonSerializable
      */
     public function update(): int
     {
+        if (!$this->keysFilled()) {
+            return 0;
+        }
+
         $data = $this->values();
         $pkValues = $this->keys();
 
