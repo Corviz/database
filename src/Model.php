@@ -53,6 +53,9 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Fetch a row from the current model table and return a new instance.
+     * Returns null if not found.
+     *
      * @param array|string|int $id
      * @return static|null
      * @throws Exception
