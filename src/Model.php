@@ -4,6 +4,8 @@ namespace Corviz\Database;
 
 use ArrayAccess;
 use ClanCats\Hydrahon\Query\Sql\Table;
+use Corviz\Database\Relationship\OneToManyRelationship;
+use Corviz\Database\Relationship\OneToOneRelationship;
 use Exception;
 use JsonSerializable;
 
@@ -53,6 +55,14 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * @return array
+     */
+    public static function keyColumns(): array
+    {
+        return (array) static::$primaryKey;
+    }
+
+    /**
      * Fetch a row from the current model table and return a new instance.
      * Returns null if not found.
      *
@@ -80,6 +90,14 @@ class Model implements ArrayAccess, JsonSerializable
 
         $instance = $query->one();
         return $instance ?: null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public static function tableName(): ?string
+    {
+        return static::$table;
     }
 
     /**
@@ -290,6 +308,26 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * @param string $relatedModel
+     * @param array|null $map
+     * @return OneToOneRelationship
+     */
+    public function relatedOne(string $relatedModel, array $map = null): OneToOneRelationship
+    {
+        return new OneToOneRelationship($this, $relatedModel, $map ?? $this->generateDefaultRelationMap());
+    }
+
+    /**
+     * @param string $relatedModel
+     * @param array|null $map
+     * @return OneToManyRelationship
+     */
+    public function relatedMany(string $relatedModel, array $map = null): OneToManyRelationship
+    {
+        return new OneToManyRelationship($this, $relatedModel, $map ?? $this->generateDefaultRelationMap());
+    }
+
+    /**
      * Attempts to update. If not successful, attempts to insert.
      * Returns true if successful, otherwise false.
      *
@@ -379,6 +417,20 @@ class Model implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * @return array
+     */
+    protected function generateDefaultRelationMap(): array
+    {
+        $map = [];
+
+        foreach (static::keyColumns() as $column) {
+            $map[$column] = static::tableName()."_$column";
+        }
+
+        return $map;
+    }
+
+    /**
      * @param mixed $data
      */
     public function __construct(mixed $data = null)
@@ -396,6 +448,15 @@ class Model implements ArrayAccess, JsonSerializable
     public function &__get($attribute)
     {
         $value = $this->data[$attribute] ?? null;
+
+        if (!isset($this->data[$attribute]) && method_exists($this, $attribute)) {
+            $result = $this->$attribute();
+
+            if ($result instanceof Relationship) {
+                $this->data[$attribute] = $result->fetchRelated();
+                return $this->data[$attribute];
+            }
+        }
 
         //Apply accessor
         $this->applyModifier($attribute, $value, 'get');
